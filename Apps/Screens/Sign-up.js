@@ -1,20 +1,23 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+
 import Input from "../components/Input";
 import { signUpValidationSchema } from "../schema/auth-schema";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useAuthContext } from "../context/Auth-Context";
 
 const SignUpScreen = ({ navigation }) => {
+  const { error, onRegister, isLoading } = useAuthContext();
+
   return (
     <View>
       <Formik
-        initialValues={{ name: "", email: "", password: "" }}
+        initialValues={{ email: "", password: "" }}
         validationSchema={signUpValidationSchema}
-        onSubmit={(values) => {
-          console.log(values);
-        }}
+        onSubmit={(values) => onRegister(values.email, values.password)}
       >
         {({
           handleChange,
@@ -25,18 +28,12 @@ const SignUpScreen = ({ navigation }) => {
           errors,
         }) => (
           <>
+            <Text className="text-[30px] text-center font-bold mt-6 text-yellow-500">
+              Coumunity Shop
+            </Text>
             <View className="w-[90%] flex items-center justify-center m-auto mt-12 bg-gray-200 rounded-lg p-4">
               <Text className="text-[30px] font-bold my-4">Sign Up</Text>
-              <Input
-                name="name"
-                placeholderText={"Your Name"}
-                value={values.name}
-                handleChange={handleChange("name")}
-                handleBlur={handleBlur("name")}
-                keyboardType="email-address"
-                error={errors.name}
-                touched={touched.name}
-              />
+
               <Input
                 name="email"
                 placeholderText={"Your Email"}
@@ -56,14 +53,21 @@ const SignUpScreen = ({ navigation }) => {
                 error={errors.password}
                 touched={touched.password}
               />
-              <View className="w-full mx-auto mt-4">
-                <Button text="Sign Up" onPress={handleSubmit} />
-              </View>
+              {isLoading ? (
+                <ActivityIndicator animate={true} color={MD2Colors.yellow800} />
+              ) : (
+                <View className="w-full mx-auto mt-4">
+                  <Button text="Sign Up" onPress={handleSubmit} />
+                </View>
+              )}
+              {error && (
+                <Text className={`text-left mt-2 text-sm  text-red-500`}>
+                  {error}
+                </Text>
+              )}
               <View className="w-full mx-auto mt-8">
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("On lgoin press");
-
                     navigation.navigate("Login");
                   }}
                 >

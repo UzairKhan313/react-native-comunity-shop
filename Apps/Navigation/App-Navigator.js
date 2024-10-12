@@ -1,13 +1,15 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
+
+import { useAuthContext } from "../context/Auth-Context";
 import UnAuthNavigatior from "./UnAuthNavigator";
 import AuthNavigation from "./AuthNavigator";
 
 const AppNavigation = () => {
+  const { isAuthenticated } = useAuthContext();
   return (
     <NavigationContainer>
-      <UnAuthNavigatior />
-      {/* <AuthNavigation /> */}
+      {!isAuthenticated ? <UnAuthNavigatior /> : <AuthNavigation />}
     </NavigationContainer>
   );
 };

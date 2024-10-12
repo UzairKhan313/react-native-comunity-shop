@@ -1,7 +1,8 @@
 import { useContext, createContext, useState } from "react";
-import { loginRequest, registerRequest } from "./Auth-Service";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../../app/firebase-two";
+
+import { loginRequest, registerRequest } from "../services/auth-servce";
+import { auth } from "../firebase";
 
 const AuthContext = createContext({});
 
@@ -24,12 +25,8 @@ export const AuthContextProvider = ({ children }) => {
       });
   };
 
-  const onRegister = (email, password, repeatPassword) => {
+  const onRegister = (email, password) => {
     setIsLoading(true);
-    if (password !== repeatPassword) {
-      setError("Password do not match!.");
-      return;
-    }
 
     registerRequest(email, password)
       .then((result) => {
