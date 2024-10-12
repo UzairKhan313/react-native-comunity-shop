@@ -6,8 +6,8 @@ import AuthNavigation from "./AuthNavigator";
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      {/* <UnAuthNavigatior /> */}
-      <AuthNavigation />
+      <UnAuthNavigatior />
+      {/* <AuthNavigation /> */}
     </NavigationContainer>
   );
 };
